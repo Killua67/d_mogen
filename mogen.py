@@ -6,7 +6,6 @@
 # @Description: 摩根太平洋对冲基金
 # @Software   : PyCharm
 import re
-import traceback
 from concurrent.futures import as_completed
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -63,12 +62,13 @@ def up_down(url_item, lost, retry):
             response = requests.get(url_host + url_item[0], headers=headers, verify=False)
             html = BeautifulSoup(response.text, 'lxml')
             prices = html.find_all('section', attrs={'class': re.compile('price__')})
-            if len(prices) > 0:
+            company_name = html.find_all('h1', attrs={'class': re.compile('companyName__')})
+            if len(prices) > 0 and len(company_name) > 0:
                 info = prices[0].text
                 match = re.findall('[+-].{4}%', info)
                 ud = match[0][:-1]
                 evl = eval(url_item[1] + '*(100' + ud + ')*100/' + str(lost))
-                print('%s,持仓比例：%s%%,涨跌:%s%%' % (url_item[0], url_item[1], ud))
+                print('%s,持仓比例：%s%%,涨跌:%s%%' % (company_name[0].text, url_item[1], ud))
                 return evl
             break
         except:
