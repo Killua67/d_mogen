@@ -65,7 +65,7 @@ def up_down(url_item, lost, retry):
             company_name = html.find_all('h1', attrs={'class': re.compile('companyName__')})
             if len(prices) > 0 and len(company_name) > 0:
                 info = prices[0].text
-                match = re.findall('[+-].{4}%', info)
+                match = re.findall('[+-].{4,5}%', info)
                 ud = match[0][:-1]
                 evl = eval(url_item[1] + '*(100' + ud + ')*100/' + str(lost))
                 print('%s,持仓比例：%s%%,涨跌:%s%%' % (company_name[0].text, url_item[1], ud))
