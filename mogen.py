@@ -72,7 +72,7 @@ def up_down(url_item, lost, retry):
                 print('%s,持仓比例：%s%%,涨跌:%s%%' % (company_name[0].text, url_item[1], ud))
                 return evl
             break
-        except requests.exceptions.SSLError:
+        except (requests.exceptions.SSLError, requests.exceptions.ProxyError):
             pass
         except:
             print(traceback.format_exc())
