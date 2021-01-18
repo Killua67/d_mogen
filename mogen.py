@@ -6,6 +6,7 @@
 # @Description: 摩根太平洋对冲基金
 # @Software   : PyCharm
 import re
+import traceback
 from concurrent.futures import as_completed
 from concurrent.futures.thread import ThreadPoolExecutor
 
@@ -71,7 +72,10 @@ def up_down(url_item, lost, retry):
                 print('%s,持仓比例：%s%%,涨跌:%s%%' % (company_name[0].text, url_item[1], ud))
                 return evl
             break
+        except requests.exceptions.SSLError:
+            pass
         except:
+            print(traceback.format_exc())
             current += 1
     print('%s 查询异常' % url_item[0])
     return 0
