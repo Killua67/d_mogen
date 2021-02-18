@@ -52,7 +52,8 @@ def get_holding():
     if len(prices) > 0:
         info = prices[0].text
         match = re.findall('[+-].{4}%', info)
-        print('基金官方预估涨跌：' + match[0])
+        if len(match) > 0:
+            print('基金官方预估涨跌：' + match[0])
 
 
 def up_down(url_item, lost, retry):
